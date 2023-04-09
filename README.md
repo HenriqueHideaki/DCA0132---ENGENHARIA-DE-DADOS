@@ -74,7 +74,7 @@ $ docker compose up
 ````
 Saída:
 
-![](\approdando.png)
+![](approdando.png)
 
 Para parar a aplicação: 
 

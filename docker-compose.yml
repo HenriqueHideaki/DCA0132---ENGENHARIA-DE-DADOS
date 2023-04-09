@@ -1,0 +1,69 @@
+# Indica a versão do Docker Compose que será utilizada
+version: "2.15.1"
+#No docker-compose.yml deve ser definida uma rede com a faixa de ip específica na rede 172.18.0.0/24.
+#Como sugestão, segue parte da especificação dessa rede:
+networks:
+  main-redes:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+# Serviços que serão executados nos containers
+services:
+  # Nome do serviço a ser criado
+  servidor:
+    # Nome do container que será executado
+    container_name: servidortcp
+    # Imagem que será executada no container
+    # A imagem é obtida localmente ou a partir do Dockerhub
+    image:  henriquehideaki/servidortcp:v1.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile_ServidorTCP
+    # Especificando a rede do servidor
+    networks:
+      main-redes:
+        ipv4_address: 172.18.255.253
+    ports:
+      - 5000:5000
+    # Permite a exibição de texto na tela do terminal
+    tty: true
+  # Nome do segundo serviço a ser criado
+  cliente:
+    container_name: cliente1
+    # O depends_on faz com que este serviço seja executado após outro
+    depends_on:
+      - servidor
+    image: henriquehideaki/clientetcp:v1.0
+    build:
+      # O caminho do diretorio que contem o dockerfile
+      context: .
+      dockerfile: ./Dockerfile_ClienteTCP
+    # Conectando o cliente na mesma rede do servidor
+    networks:
+      main-redes:
+        ipv4_address: 172.18.255.254
+    # comando a serem executados no cliente logo apos o container ser inicializado passado ip do servidor
+    entrypoint: ["python", "clienteTCP.py", "172.18.255.253"]
+
+    tty: true
+    # Quando o container terminar a sua execução, sempre irá reiniciar
+    restart: always
+
+  cliente2:
+    container_name: cliente2
+    depends_on:
+      - servidor
+    image: henriquehideaki/clientetcp:v1.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile_ClienteTCP
+    networks:
+      main-redes:
+        ipv4_address: 172.18.255.25
+
+    entrypoint: ["python", "clienteTCP.py", "172.18.255.253"]
+    tty: true
+    restart: always
+

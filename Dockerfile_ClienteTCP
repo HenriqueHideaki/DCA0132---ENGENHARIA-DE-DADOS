@@ -1,0 +1,4 @@
+FROM python:3
+WORKDIR /app
+COPY clienteTCP.py /app
+ENTRYPOINT ["python","clienteTCP.py"]

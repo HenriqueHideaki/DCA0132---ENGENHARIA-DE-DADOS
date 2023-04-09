@@ -82,4 +82,4 @@ Para parar a aplicação:
 $ docker compose down
 ````
 Saída:
-![](\dockercomposedown.png)
+![](dockercomposedown.png)

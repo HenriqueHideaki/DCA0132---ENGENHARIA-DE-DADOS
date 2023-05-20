@@ -74,7 +74,7 @@ $ docker compose up
 ````
 Saída:
 
-![](\approdando.png)
+![](approdando.png)
 
 Para parar a aplicação: 
 
@@ -82,4 +82,4 @@ Para parar a aplicação:
 $ docker compose down
 ````
 Saída:
-![](\dockercomposedown.png)
+![](dockercomposedown.png)
